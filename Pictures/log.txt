@@ -1,0 +1,5 @@
+screen.jpg | out-decode | QR-Code:Hello :)
+screen.jpga.jpg | out-decode | QR-Code:Hello :)
+screen.jpga.jpgab.jpg | out-decode | QR-Code:Hello :)
+screen.jpga.jpgab.jpgabc.jpg | out-decode | QR-Code:Hello :)
+screen.jpga.jpgab.jpgabc.jpgabcd.jpg | out-decode | QR-Code:Hello :)
