@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <zbar.h>
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv2/core.hpp>
+
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/imgproc/types_c.h>
@@ -27,8 +27,10 @@ void cut_counter(IplImage* _image,IplImage* img){
   assert(contours!=0);
   int maxx =0;
   int miny = 0;
-  char s[50]= "Pictures/screen";
-  int j=0;
+  char ss[50]= "Pictures/screen";
+  char s[50];
+  int j=1;
+  char b;
   FILE *log = fopen("Pictures/log.txt", "w+");
   ImageScanner scanner;
   scanner.set_config(ZBAR_NONE, ZBAR_CFG_ENABLE, 1);
@@ -56,9 +58,12 @@ void cut_counter(IplImage* _image,IplImage* img){
      cvSetImageROI(img, cvRect(p->x, p->y, width, heith));
      IplImage *sub_img = cvCreateImage(cvGetSize(img), img->depth,img->nChannels);
      cvCopy(img, sub_img, NULL);
-     strncat (s, "abcdefgh",j);
+     strcpy(s,ss);
+     printf("%s\n",s );
+     b = j +'0';
+     s[15]= b;
+     s[16]= '\0';
      strncat (s, ".jpg",4);
-
      //проверка на qr код
      imgs = cvarrToMat(sub_img, true);
      Mat imgout(imgs.size(), CV_8UC1);
@@ -66,24 +71,22 @@ void cut_counter(IplImage* _image,IplImage* img){
      width = imgout.cols;
      heith = imgout.rows;
      raw = (uchar *)imgout.data;
-     // wrap image data
      image.set_data(raw, width*heith);
      image.set_format("Y800");
      image.set_size(width,heith);
      scanner.scan(image);
-       // scan the image for barcodes
        for(Image::SymbolIterator symbol = image.symbol_begin(); symbol != image.symbol_end(); ++symbol) {
-         // do something useful with results
          fprintf(log, "%s |out-decode| %s \n",s, symbol->get_data().c_str());
          cvSaveImage(s, sub_img);
        }
      image.set_data(NULL, 0);
-
      j++;
      cvReleaseImage(&sub_img);
      maxx=0;
      miny=0;
      }
+     *s='\0';
+     strcpy(s,ss);
   }
  // освобождаем ресурсы
   cvReleaseMemStorage(&storage);
