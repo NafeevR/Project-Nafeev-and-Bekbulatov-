@@ -8,4 +8,4 @@ main.o:
 
 clean:
 	rm -rf *.o main
-	rm -rf Pictures/*
+	rm -rf Pictures/log.txt Pictures/*.jpg
